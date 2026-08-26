@@ -1,1 +1,95 @@
-<p>login works!</p>
+<div class="login-container">
+
+  <div class="login-card">
+
+    <h1>E-Channeling</h1>
+
+    <h2>Login</h2>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+      <!-- Email -->
+
+      <div class="form-group">
+
+        <label for="email">
+          Email
+        </label>
+
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="Enter your email"
+        />
+
+        @if (loginForm.controls.email.touched &&
+             loginForm.controls.email.invalid) {
+
+          <div class="error">
+
+            @if (loginForm.controls.email.errors?.['required']) {
+              <span>Email is required.</span>
+            }
+
+            @if (loginForm.controls.email.errors?.['email']) {
+              <span>Please enter a valid email.</span>
+            }
+
+          </div>
+
+        }
+
+      </div>
+
+
+      <!-- Password -->
+
+      <div class="form-group">
+
+        <label for="password">
+          Password
+        </label>
+
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          placeholder="Enter your password"
+        />
+
+        @if (loginForm.controls.password.touched &&
+             loginForm.controls.password.invalid) {
+
+          <div class="error">
+
+            @if (loginForm.controls.password.errors?.['required']) {
+              <span>Password is required.</span>
+            }
+
+            @if (loginForm.controls.password.errors?.['minlength']) {
+              <span>Password must contain at least 6 characters.</span>
+            }
+
+          </div>
+
+        }
+
+      </div>
+
+
+      <!-- Login Button -->
+
+      <button
+        type="submit"
+        [disabled]="loginForm.invalid">
+
+        Login
+
+      </button>
+
+    </form>
+
+  </div>
+
+</div>
