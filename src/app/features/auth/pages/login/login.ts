@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
-
+import { Auth } from '../../../../core/services/auth';
 @Component({
   imports: [ReactiveFormsModule],
   selector: 'app-login',
@@ -14,8 +14,46 @@ export class Login {
     password: new FormControl('', [Validators.required, Validators.minLength(6)]),
   });
 
+  constructor(
+    private auth: Auth
+  ) {}
+
   onSubmit() {
-    
-    console.log(this.loginForm.value);  
+
+    if (this.loginForm.invalid) {
+      return;
+    }
+
+    const request = {
+      email: this.loginForm.value.email,
+      password: this.loginForm.value.password
+    };
+
+    console.log('Sending login request:', request);
+
+    this.auth.login(request).subscribe({
+
+      next: response => {
+        console.log('Login successful:', response);
+        localStorage.setItem('token', response.token);
+
+        this.auth.getProfile().subscribe({
+
+        next: profile => {
+          console.log('Profile:', profile);
+        },
+
+        error: error => {
+          console.error('Profile failed:', error);
+        }
+
+      });
+      },
+
+      error: error => {
+        console.error('Login failed:', error);
+      }
+
+    });
   }
 }

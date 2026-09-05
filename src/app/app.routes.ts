@@ -16,6 +16,7 @@ import { AdminDashboard } from './features/admin/pages/admin-dashboard/admin-das
 import { AdminDoctors } from './features/admin/pages/admin-doctors/admin-doctors';
 import { AdminPatients } from './features/admin/pages/admin-patients/admin-patients';
 import { AdminAppointments } from './features/admin/pages/admin-appointments/admin-appointments';
+import { authGuard } from './core/guards/auth-guard';
 
 export const routes: Routes = [
 
@@ -29,85 +30,86 @@ export const routes: Routes = [
         component: Register
     },
     // Doctors
-  {
-    path: 'doctors',
-    component: DoctorsList
-  },
+    {
+      path: 'doctors',
+      component: DoctorsList
+    },
 
-  {
-    path: 'doctors/:id',
-    component: DoctorsDetails
-  },
+    {
+      path: 'doctors/:id',
+      component: DoctorsDetails
+    },
 
-  // Appointments
-  {
-    path: 'appointments/book',
-    component: BookAppointment
-  },
+    // Appointments
+    {
+      path: 'appointments/book',
+      component: BookAppointment
+    },
 
-  {
-    path: 'appointments/my-appointments',
-    component: MyAppointments
-  },
+    {
+      path: 'appointments/my-appointments',
+      component: MyAppointments
+    },
 
-  // Patient
-  {
-    path: 'patient/dashboard',
-    component: PatientDashboard
-  },
+    // Patient
+    {
+      path: 'patient/dashboard',
+      component: PatientDashboard,
+      canActivate: [authGuard]
+    },
 
-  {
-    path: 'patient/profile',
-    component: PatientProfile
-  },
+    {
+      path: 'patient/profile',
+      component: PatientProfile
+    },
 
-  // Doctor
-  {
-    path: 'doctor/dashboard',
-    component: DoctorDashboard
-  },
+    // Doctor
+    {
+      path: 'doctor/dashboard',
+      component: DoctorDashboard
+    },
 
-  {
-    path: 'doctor/appointments',
-    component: DoctorAppointments
-  },
+    {
+      path: 'doctor/appointments',
+      component: DoctorAppointments
+    },
 
-  {
-    path: 'doctor/schedule',
-    component: DoctorSchedule
-  },
+    {
+      path: 'doctor/schedule',
+      component: DoctorSchedule
+    },
 
-  // Admin
-  {
-    path: 'admin/dashboard',
-    component: AdminDashboard
-  },
+    // Admin
+    {
+      path: 'admin/dashboard',
+      component: AdminDashboard
+    },
 
-  {
-    path: 'admin/doctors',
-    component: AdminDoctors
-  },
+    {
+      path: 'admin/doctors',
+      component: AdminDoctors
+    },
 
-  {
-    path: 'admin/patients',
-    component: AdminPatients
-  },
+    {
+      path: 'admin/patients',
+      component: AdminPatients
+    },
 
-  {
-    path: 'admin/appointments',
-    component: AdminAppointments
-  },
+    {
+      path: 'admin/appointments',
+      component: AdminAppointments
+    },
 
-  // Default route
-  {
-    path: '',
-    redirectTo: 'login',
-    pathMatch: 'full'
-  },
+    // Default route
+    {
+      path: '',
+      redirectTo: 'login',
+      pathMatch: 'full'
+    },
 
-  // Unknown route
-  {
-    path: '**',
-    redirectTo: 'login'
-  }
+    // Unknown route
+    {
+      path: '**',
+      redirectTo: 'login'
+    }
 ];

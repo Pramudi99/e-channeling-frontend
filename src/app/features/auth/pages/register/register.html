@@ -8,13 +8,13 @@
     type="text"
     formControlName="firstName"
   >
-
+ 
   <label>Last Name</label>
 
   <input
     type="text"
     formControlName="lastName"
-  >
+  > 
 
   <label>Email</label>
 
@@ -23,12 +23,12 @@
     formControlName="email"
   >
 
-  <label>Phone</label>
+  <!-- <label>Phone</label>
 
   <input
     type="text"
     formControlName="phone"
-  >
+  > -->
 
   <label>Password</label>
 
@@ -37,12 +37,25 @@
     formControlName="password"
   >
 
-  <label>Confirm Password</label>
+    <label for="confirmPassword">
+    Confirm Password
+    </label>
 
-  <input
-    type="password"
-    formControlName="confirmPassword"
-  >
+    <input
+      id="confirmPassword"
+      type="password"
+      formControlName="confirmPassword"
+      placeholder="Confirm your password"
+    >
+
+    @if (
+      registerForm.controls.confirmPassword.touched &&
+      registerForm.hasError('passwordMismatch')
+    ) {
+      <div class="error">
+        Passwords do not match.
+      </div>
+    }
 
   <button
     type="submit"

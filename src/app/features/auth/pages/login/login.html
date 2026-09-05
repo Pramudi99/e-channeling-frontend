@@ -4,91 +4,69 @@
 
     <h1>E-Channeling</h1>
 
-    <h2>Login</h2>
+   <h2>Login</h2>
 
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 
-      <!-- Email -->
+  <div>
+    <label for="email">Email</label>
 
-      <div class="form-group">
+    <input
+      id="email"
+      type="email"
+      formControlName="email"
+      placeholder="Enter your email"
+    >
 
-        <label for="email">
-          Email
-        </label>
-
-        <input
-          id="email"
-          type="email"
-          formControlName="email"
-          placeholder="Enter your email"
-        />
-
-        @if (loginForm.controls.email.touched &&
-             loginForm.controls.email.invalid) {
-
-          <div class="error">
-
-            @if (loginForm.controls.email.errors?.['required']) {
-              <span>Email is required.</span>
-            }
-
-            @if (loginForm.controls.email.errors?.['email']) {
-              <span>Please enter a valid email.</span>
-            }
-
-          </div>
-
-        }
-
+    @if (
+      loginForm.controls.email.touched &&
+      loginForm.controls.email.hasError('required')
+    ) {
+      <div class="error">
+        Email is required.
       </div>
+    }
 
-
-      <!-- Password -->
-
-      <div class="form-group">
-
-        <label for="password">
-          Password
-        </label>
-
-        <input
-          id="password"
-          type="password"
-          formControlName="password"
-          placeholder="Enter your password"
-        />
-
-        @if (loginForm.controls.password.touched &&
-             loginForm.controls.password.invalid) {
-
-          <div class="error">
-
-            @if (loginForm.controls.password.errors?.['required']) {
-              <span>Password is required.</span>
-            }
-
-            @if (loginForm.controls.password.errors?.['minlength']) {
-              <span>Password must contain at least 6 characters.</span>
-            }
-
-          </div>
-
-        }
-
+    @if (
+      loginForm.controls.email.touched &&
+      loginForm.controls.email.hasError('email')
+    ) {
+      <div class="error">
+        Please enter a valid email.
       </div>
+    }
+  </div>
 
 
-      <!-- Login Button -->
+  <div>
+    <label for="password">Password</label>
 
-      <button
-        type="submit"
-        [disabled]="loginForm.invalid">
+    <input
+      id="password"
+      type="password"
+      formControlName="password"
+      placeholder="Enter your password"
+    >
 
-        Login
+    @if (
+      loginForm.controls.password.touched &&
+      loginForm.controls.password.hasError('required')
+    ) {
+      <div class="error">
+        Password is required.
+      </div>
+    }
+  </div>
 
-      </button>
 
-    </form>
+  <button
+    type="submit"
+    [disabled]="loginForm.invalid"
+  >
+    Login
+  </button>
+
+</form>
 
   </div>
 

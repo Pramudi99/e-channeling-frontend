@@ -1,5 +1,29 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Auth } from '../../../../core/services/auth';
+import { FormGroup,
+   FormControl,
+   Validators, 
+   ReactiveFormsModule,
+   AbstractControl,
+   ValidatorFn,
+  ValidationErrors } from '@angular/forms';
+
+  export const passwordMatchValidator: ValidatorFn = (
+  control: AbstractControl
+): ValidationErrors | null => {
+
+  const password = control.get('password')?.value;
+  const confirmPassword = control.get('confirmPassword')?.value;
+
+  if (password !== confirmPassword) {
+    return {
+      passwordMismatch: true
+    };
+  }
+
+  return null;
+};
+
 
 @Component({
   imports: [ReactiveFormsModule],
@@ -7,7 +31,14 @@ import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angula
   styleUrl: './register.css',
   templateUrl: './register.html',
 })
+
+
+
 export class Register {
+
+  constructor(
+  private authService: Auth
+) {}
       registerForm = new FormGroup({
       firstName: new FormControl('', Validators.required),
 
@@ -18,9 +49,9 @@ export class Register {
         Validators.email
       ]),
 
-      phone: new FormControl('', [
-        Validators.required
-      ]),
+      // phone: new FormControl('', [
+      //   Validators.required
+      // ]),
 
       password: new FormControl('', [
         Validators.required,
@@ -30,7 +61,15 @@ export class Register {
       confirmPassword: new FormControl('', [
         Validators.required
       ])
-    });
+    },
+
+     {
+    validators: passwordMatchValidator
+     }
+  );
+
+
+  
     
     onSubmit() {
 
@@ -38,7 +77,26 @@ export class Register {
     return;
   }
 
-  console.log(this.registerForm.value);
+  const request = {
+    fullName:
+      `${this.registerForm.value.firstName} ${this.registerForm.value.lastName}`,
+
+    email: this.registerForm.value.email,
+
+    password: this.registerForm.value.password
+  };
+
+  console.log('Sending to backend:', request);
+
+  this.authService.register(request).subscribe({
+    next: response => {
+      console.log('Registration successful:', response);
+    },
+
+    error: error => {
+      console.error('Registration failed:', error);
+    }
+  });
 }
 
 }
