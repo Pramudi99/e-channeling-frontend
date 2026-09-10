@@ -29,4 +29,8 @@ export class Auth {
       `${this.apiUrl}/profile`
     );
   }
+
+  logout(): void {
+  localStorage.removeItem('token');
+  }
 }

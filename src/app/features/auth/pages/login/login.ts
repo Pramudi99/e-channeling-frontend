@@ -36,6 +36,7 @@ export class Login {
       next: response => {
         console.log('Login successful:', response);
         localStorage.setItem('token', response.token);
+        localStorage.setItem('role', response.role);
 
         this.auth.getProfile().subscribe({
 
