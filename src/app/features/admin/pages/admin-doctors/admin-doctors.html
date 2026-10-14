@@ -1,1 +1,34 @@
-<p>admin-doctors works!</p>
+
+<section class="doctors-page">
+
+  <div class="page-header">
+    <div>
+      <h2>Manage Doctors</h2>
+      <p>View and manage registered doctors.</p>
+    </div>
+
+    <button type="button" class="add-button">
+      + Add Doctor
+    </button>
+  </div>
+
+  @if (errorMessage) {
+    <div class="error-message">
+      {{ errorMessage }}
+
+      <button type="button" (click)="loadDoctors()">
+        Retry
+      </button>
+    </div>
+  }
+
+  <div class="table-card">
+    <app-data-table
+      [columns]="columns"
+      [rows]="doctors"
+      [loading]="isLoading"
+      emptyMessage="No doctors have been registered yet.">
+    </app-data-table>
+  </div>
+
+</section>

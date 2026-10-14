@@ -94,7 +94,10 @@ export const routes: Routes = [
 
     {
       path: 'admin/doctors',
-      component: AdminDoctors
+      component: AdminDoctors,
+      canActivate: [authGuard,
+        roleGuard(['Admin'])
+      ]
     },
 
     {

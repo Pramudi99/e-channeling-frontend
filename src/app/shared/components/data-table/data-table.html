@@ -1,0 +1,32 @@
+
+<div class="table-container">
+  @if (loading) {
+    <p>Loading data...</p>
+  }
+
+  @if (!loading && rows.length > 0) {
+    <table>
+      <thead>
+        <tr>
+          @for (column of columns; track column.key) {
+            <th>{{ column.label }}</th>
+          }
+        </tr>
+      </thead>
+
+      <tbody>
+        @for (row of rows; track $index) {
+          <tr>
+            @for (column of columns; track column.key) {
+              <td>{{ getCellValue(row, column.key) }}</td>
+            }
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+
+  @if (!loading && rows.length === 0) {
+    <p>{{ emptyMessage }}</p>
+  }
+</div>
