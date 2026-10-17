@@ -1,0 +1,46 @@
+<form [formGroup]="doctorForm" (ngSubmit)="onSubmit()">
+
+  <h2>Add New Doctor</h2>
+
+  <label for="fullName">Full Name</label>
+  <input id="fullName" type="text" formControlName="fullName" />
+  @if (doctorForm.controls.fullName.touched &&
+       doctorForm.controls.fullName.invalid) {
+    <small>Full name is required.</small>
+  }
+
+  <label for="email">Email</label>
+  <input id="email" type="email" formControlName="email" />
+  @if (doctorForm.controls.email.touched &&
+       doctorForm.controls.email.invalid) {
+    <small>Enter a valid email address.</small>
+  }
+
+  <label for="specialization">Specialization</label>
+  <input id="specialization" type="text"
+         formControlName="specialization" />
+
+  <label for="qualification">Qualification</label>
+  <input id="qualification" type="text"
+         formControlName="qualification" />
+
+  <label for="experience">Experience (years)</label>
+  <input id="experience" type="number" min="0"
+         formControlName="experience" />
+
+  <label for="consultationFee">Consultation Fee</label>
+  <input id="consultationFee" type="number" min="0"
+         formControlName="consultationFee" />
+
+  <label for="description">Description</label>
+  <textarea id="description"
+            formControlName="description"></textarea>
+
+<div class="form-actions">
+  <button type="submit">Save Doctor</button>
+  <button type="button" (click)="cancelForm.emit()">
+    Cancel
+  </button>
+</div>
+
+</form>

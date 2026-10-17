@@ -2,23 +2,39 @@
 <section class="doctors-page">
 
   <div class="page-header">
-    <div>
+    <div class="page-title">
       <h2>Manage Doctors</h2>
       <p>View and manage registered doctors.</p>
     </div>
 
-    <button type="button" class="add-button">
-      + Add Doctor
+    <button
+      type="button"
+      class="add-button"
+      (click)="openDoctorForm()">
+      <span class="plus-icon">+</span>
+      Add Doctor
     </button>
   </div>
 
   @if (errorMessage) {
     <div class="error-message">
-      {{ errorMessage }}
+      <span>{{ errorMessage }}</span>
 
-      <button type="button" (click)="loadDoctors()">
+      <button
+        type="button"
+        class="retry-button"
+        (click)="loadDoctors()">
         Retry
       </button>
+    </div>
+  }
+
+  @if (showDoctorForm) {
+    <div class="form-card">
+      <app-doctor-form
+        (saveDoctor)="onSaveDoctor($event)"
+        (cancelForm)="cancelDoctorForm()">
+      </app-doctor-form>
     </div>
   }
 

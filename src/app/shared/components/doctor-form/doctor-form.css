@@ -1,0 +1,182 @@
+
+:host {
+  display: block;
+  width: 100%;
+  color: #1f2937;
+}
+
+form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.form-actions button {
+  min-width: 120px;
+}
+
+.form-actions button[type="submit"] {
+  margin-top: 0;
+}
+
+@media (max-width: 600px) {
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .form-actions button {
+    width: 100%;
+  }
+}
+
+h2 {
+  margin: 0 0 16px;
+  color: #111827;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+/* Form labels */
+
+label {
+  display: block;
+  margin-top: 8px;
+  color: #374151;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* Text inputs and textarea */
+
+input,
+textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 11px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 7px;
+  background-color: #ffffff;
+  color: #111827;
+  font-family: inherit;
+  font-size: 14px;
+  transition: border-color 0.2s ease,
+              box-shadow 0.2s ease;
+}
+
+input {
+  min-height: 42px;
+}
+
+textarea {
+  min-height: 100px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #9ca3af;
+}
+
+/* Focus state */
+
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgb(37 99 235 / 12%);
+}
+
+/* Invalid fields */
+
+input.ng-invalid.ng-touched,
+textarea.ng-invalid.ng-touched {
+  border-color: #dc2626;
+}
+
+input.ng-invalid.ng-touched:focus,
+textarea.ng-invalid.ng-touched:focus {
+  box-shadow: 0 0 0 3px rgb(220 38 38 / 10%);
+}
+
+/* Validation messages */
+
+small {
+  display: block;
+  margin-top: -2px;
+  color: #dc2626;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* Form buttons */
+
+button {
+  min-height: 40px;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 7px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease,
+              box-shadow 0.2s ease;
+}
+
+button[type="submit"] {
+  margin-top: 16px;
+  background-color: #2563eb;
+  color: #ffffff;
+}
+
+button[type="submit"]:hover:not(:disabled) {
+  background-color: #1d4ed8;
+}
+
+button[type="submit"]:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+button[type="button"] {
+  border: 1px solid #d1d5db;
+  background-color: #ffffff;
+  color: #374151;
+}
+
+button[type="button"]:hover {
+  background-color: #f3f4f6;
+}
+
+/* Keyboard accessibility */
+
+button:focus-visible {
+  outline: 3px solid #93c5fd;
+  outline-offset: 2px;
+}
+
+/* Tablet and mobile */
+
+@media (max-width: 600px) {
+  h2 {
+    font-size: 20px;
+  }
+
+  input,
+  textarea {
+    font-size: 16px;
+  }
+
+  button {
+    width: 100%;
+  }
+}
