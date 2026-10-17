@@ -9,6 +9,7 @@ export interface TableColumn {
 @Component({
   imports: [],
   selector: 'app-data-table',
+  standalone: true,
   styleUrl: './data-table.css',
   templateUrl: './data-table.html',
 })
@@ -22,3 +23,7 @@ export class DataTable {
     return (row as Record<string, unknown>)[key];
   }
 }
+
+
+
+
