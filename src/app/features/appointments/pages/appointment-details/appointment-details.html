@@ -1,1 +1,74 @@
-<p>appointment-details works!</p>
+
+<section class="details-page">
+  <a routerLink="/appointments/my-appointments" class="back-link">
+    ← Back to My Appointments
+  </a>
+
+  <header class="page-header">
+    <h1>Appointment Details</h1>
+    <p>View your appointment information and booking status.</p>
+  </header>
+
+  @if (isLoading) {
+    <div class="state-message" role="status">
+      Loading appointment details...
+    </div>
+  } @else if (errorMessage) {
+    <div class="error-message" role="alert">
+      {{ errorMessage }}
+
+      <p>
+        <a routerLink="/appointments/my-appointments">
+          Return to My Appointments
+        </a>
+      </p>
+    </div>
+  } @else if (appointment; as item) {
+    <article class="appointment-card">
+      <div class="card-header">
+        <div>
+          <h2>{{ item.doctorName }}</h2>
+          <p>{{ item.specialization }}</p>
+        </div>
+
+        <span class="status" [class.pending]="item.status === 'Pending'">
+          {{ item.status }}
+        </span>
+      </div>
+
+      <div class="details-grid">
+        <div class="detail-item">
+          <span>Booking Reference</span>
+          <strong>#{{ item.id }}</strong>
+        </div>
+
+        <div class="detail-item">
+          <span>Appointment Date</span>
+          <strong>{{ item.appointmentDate | date:'fullDate' }}</strong>
+        </div>
+
+        <div class="detail-item">
+          <span>Appointment Time</span>
+          <strong>{{ item.timeSlot }}</strong>
+        </div>
+
+        <div class="detail-item">
+          <span>Consultation Fee</span>
+          <strong>
+            {{ item.consultationFee | currency:'LKR ':'symbol':'1.2-2' }}
+          </strong>
+        </div>
+      </div>
+
+      <div class="card-actions">
+        <a routerLink="/appointments/my-appointments">
+          View All Appointments
+        </a>
+
+        <a routerLink="/doctors">
+          Browse Doctors
+        </a>
+      </div>
+    </article>
+  }
+</section>

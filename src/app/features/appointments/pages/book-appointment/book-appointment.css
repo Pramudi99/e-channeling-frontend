@@ -1,150 +1,177 @@
-:host {
-  display: block;
-}
 
 .booking-page {
-  max-width: 760px;
-  margin: 32px auto;
-  padding: 28px;
-  box-sizing: border-box;
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  box-shadow: 0 4px 14px rgb(15 23 42 / 5%);
-  color: #1f2937;
+  max-width: 850px;
+  margin: 0 auto;
+  padding: 32px 20px;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 20px;
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 600;
 }
 
 .page-header {
-  margin-bottom: 28px;
+  margin-bottom: 24px;
 }
 
-.page-header h2 {
-  margin: 0 0 8px;
-  font-size: 26px;
-  font-weight: 700;
+.page-header h1 {
+  margin-bottom: 8px;
 }
 
 .page-header p {
+  color: #64748b;
+}
+
+.selected-doctor {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 24px;
+  margin-bottom: 28px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #eff6ff;
+}
+
+.doctor-avatar {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: #2563eb;
+  color: white;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.selected-doctor h2 {
+  margin: 0 0 8px;
+}
+
+.selected-doctor p {
+  margin: 6px 0;
+}
+
+.specialization {
+  color: #1d4ed8;
+  font-weight: 600;
+}
+
+.fee {
+  font-weight: 700;
+}
+
+.selected-doctor a {
+  display: inline-block;
+  margin-top: 8px;
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.booking-form {
+  display: grid;
+  gap: 20px;
+  padding: 28px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: white;
+}
+
+.booking-form h2 {
   margin: 0;
-  color: #6b7280;
-  line-height: 1.6;
-  font-size: 14px;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  margin-bottom: 22px;
 }
 
 .form-group label {
-  font-size: 14px;
   font-weight: 600;
 }
 
 .form-group input,
 .form-group select {
   width: 100%;
-  min-height: 44px;
-  padding: 10px 12px;
   box-sizing: border-box;
-  border: 1px solid #d1d5db;
-  border-radius: 7px;
-  background: #ffffff;
-  color: #111827;
+  padding: 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: white;
   font: inherit;
 }
 
 .form-group input:focus,
 .form-group select:focus {
   outline: 2px solid #93c5fd;
-  outline-offset: 1px;
   border-color: #2563eb;
 }
 
 .form-group small {
   color: #b91c1c;
-  font-size: 13px;
-}
-
-.book-button,
-.retry-button {
-  padding: 11px 18px;
-  border: 1px solid #2563eb;
-  border-radius: 7px;
-  font: inherit;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
 }
 
 .book-button {
-  width: 100%;
+  padding: 13px 18px;
+  border: 0;
+  border-radius: 8px;
   background: #2563eb;
-  color: #ffffff;
+  color: white;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
 }
 
 .book-button:hover:not(:disabled) {
   background: #1d4ed8;
 }
 
-.retry-button {
-  display: block;
-  margin-top: 12px;
-  background: #ffffff;
-  color: #b91c1c;
-  border-color: #fecaca;
-}
-
-.retry-button:hover:not(:disabled) {
-  background: #fef2f2;
-}
-
-button:disabled {
+.book-button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
 
-.success-message,
+.error-message,
+.success-message {
+  margin: 20px 0;
+  padding: 20px;
+  border-radius: 10px;
+}
+
 .error-message {
-  margin-bottom: 22px;
-  padding: 14px 16px;
-  border-radius: 8px;
-  font-size: 14px;
-  line-height: 1.6;
-  overflow-wrap: anywhere;
+  border: 1px solid #fecaca;
+  background: #fef2f2;
+  color: #b91c1c;
 }
 
 .success-message {
-  color: #166534;
+  border: 1px solid #a7f3d0;
   background: #f0fdf4;
-  border: 1px solid #bbf7d0;
+  color: #166534;
+}
+
+.success-message h2 {
+  margin-top: 0;
+  font-size: 20px;
 }
 
 .success-message p {
-  margin: 6px 0 0;
-}
-
-.error-message {
-  color: #b91c1c;
-  background: #fef2f2;
-  border: 1px solid #fecaca;
-}
-
-.loading-message {
-  padding: 20px 0;
-  text-align: center;
-  color: #6b7280;
+  margin-bottom: 8px;
 }
 
 @media (max-width: 600px) {
-  .booking-page {
-    margin: 16px 12px;
-    padding: 18px;
+  .selected-doctor {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
-  .page-header h2 {
-    font-size: 22px;
+  .booking-form {
+    padding: 20px;
   }
 }

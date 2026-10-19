@@ -24,3 +24,4 @@ export interface CreateAppointmentResponse {
   status: string;
   consultationFee: number;
 }
+

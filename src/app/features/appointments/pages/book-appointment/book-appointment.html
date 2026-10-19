@@ -1,68 +1,71 @@
+
 <section class="booking-page">
+
+  <a routerLink="/doctors" class="back-link">
+    ← Back to Doctors
+  </a>
+
   <header class="page-header">
-    <h2>Book an Appointment</h2>
-    <p>Choose your preferred doctor, date and time.</p>
+    <h1>Book an Appointment</h1>
+    <p>Choose a date and time for your consultation.</p>
   </header>
-
-  @if (successMessage) {
-    <div class="success-message" role="status">
-      <strong>{{ successMessage }}</strong>
-
-      @if (bookingReference !== null) {
-        <p>Booking reference: {{ bookingReference }}</p>
-      }
-    </div>
-  }
 
   @if (errorMessage) {
     <div class="error-message" role="alert">
       {{ errorMessage }}
 
-      <button
-        type="button"
-        class="retry-button"
-        (click)="loadDoctors()"
-        [disabled]="isLoadingDoctors">
-        Retry loading doctors
-      </button>
+      @if (!doctor && !isLoadingDoctor) {
+        <p><a routerLink="/doctors">Browse doctors</a></p>
+      }
     </div>
   }
 
-  @if (isLoadingDoctors) {
-    <p class="loading-message">Loading doctors...</p>
-  } @else {
-    <form
-      [formGroup]="bookingForm"
-      (ngSubmit)="onSubmit()"
-      novalidate>
+  @if (successMessage) {
+  <div class="success-message" role="status">
+    <h2>✓ Appointment Booked Successfully!</h2>
 
-      <div class="form-group">
-        <label for="doctorId">Select Doctor</label>
+    <p>{{ successMessage }}</p>
 
-        <select
-          id="doctorId"
-          formControlName="doctorId">
+    @if (bookingReference !== null) {
+      <p>Booking Reference: #{{ bookingReference }}</p>
+    }
 
-          <option [ngValue]="null">
-            -- Select a doctor --
-          </option>
+    <p>Redirecting to your appointment details...</p>
+  </div>
+}
 
-          @for (doctor of doctors; track doctor.id) {
-            <option [ngValue]="doctor.id">
-              {{ doctor.fullName }} -
-              {{ doctor.specialization }} -
-              Fee: {{ doctor.consultationFee }}
-            </option>
-          }
-        </select>
+  @if (isLoadingDoctor) {
+    <p>Loading doctor details...</p>
+  } @else if (doctor) {
 
-        @if (
-          bookingForm.controls.doctorId.touched &&
-          bookingForm.controls.doctorId.invalid
-        ) {
-          <small>Please select a doctor.</small>
-        }
+    <article class="selected-doctor">
+      <div class="doctor-avatar">
+        {{ doctor.fullName.charAt(0).toUpperCase() }}
       </div>
+
+      <div>
+        <h2>{{ doctor.fullName }}</h2>
+        <p class="specialization">{{ doctor.specialization }}</p>
+        <p>{{ doctor.qualification }}</p>
+        <p>{{ doctor.experience }} years of experience</p>
+
+        <p class="fee">
+          Consultation fee:
+          {{ doctor.consultationFee | currency:'LKR ':'symbol':'1.2-2' }}
+        </p>
+
+        <a [routerLink]="['/doctors', doctor.id]">
+          View Doctor Profile
+        </a>
+      </div>
+    </article>
+
+    <form
+      class="booking-form"
+      [formGroup]="bookingForm"
+      (ngSubmit)="onSubmit()">
+
+      <h2>Appointment Details</h2>
 
       <div class="form-group">
         <label for="appointmentDate">Appointment Date</label>
@@ -71,7 +74,8 @@
           id="appointmentDate"
           type="date"
           formControlName="appointmentDate"
-          [min]="minDate" />
+          [min]="minDate"
+        />
 
         @if (
           bookingForm.controls.appointmentDate.touched &&
@@ -84,11 +88,8 @@
       <div class="form-group">
         <label for="timeSlot">Appointment Time</label>
 
-        <select
-          id="timeSlot"
-          formControlName="timeSlot">
-
-          <option value="">-- Select a time slot --</option>
+        <select id="timeSlot" formControlName="timeSlot">
+          <option value="">Select a time slot</option>
           <option value="09:00-09:30">09:00 AM - 09:30 AM</option>
           <option value="09:30-10:00">09:30 AM - 10:00 AM</option>
           <option value="10:00-10:30">10:00 AM - 10:30 AM</option>
@@ -102,21 +103,21 @@
           bookingForm.controls.timeSlot.touched &&
           bookingForm.controls.timeSlot.invalid
         ) {
-          <small>Please select an appointment time.</small>
+          <small>Please select a time slot.</small>
         }
       </div>
 
       <button
         type="submit"
         class="book-button"
-        [disabled]="isBooking || isLoadingDoctors || doctors.length === 0">
-
+        [disabled]="isBooking || isLoadingDoctor || !doctor">
         @if (isBooking) {
-          Booking appointment...
+            Booking appointment...
         } @else {
-          Book Appointment
+            Confirm Appointment
         }
-      </button>
+        </button>
+
     </form>
   }
 </section>

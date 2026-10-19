@@ -18,6 +18,7 @@ import { AdminPatients } from './features/admin/pages/admin-patients/admin-patie
 import { AdminAppointments } from './features/admin/pages/admin-appointments/admin-appointments';
 import { authGuard } from './core/guards/auth-guard';
 import { roleGuard } from './core/guards/role-guard';
+import { AppointmentDetails } from './features/appointments/pages/appointment-details/appointment-details';
 
 export const routes: Routes = [
 
@@ -44,13 +45,23 @@ export const routes: Routes = [
     // Appointments
     {
       path: 'appointments/book',
-      component: BookAppointment
+      component: BookAppointment,
+      canActivate: [authGuard, roleGuard(['Patient'])]
+    },
+
+   {
+      path: 'appointments/my-appointments',
+      component: MyAppointments,
+      canActivate: [authGuard, roleGuard(['Patient'])]
     },
 
     {
-      path: 'appointments/my-appointments',
-      component: MyAppointments
+      path: 'appointments/:id',
+      component: AppointmentDetails,
+      canActivate: [authGuard, roleGuard(['Patient'])]
     },
+
+    
 
     // Patient
     {

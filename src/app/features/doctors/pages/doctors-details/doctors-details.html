@@ -1,1 +1,85 @@
-<p>doctors-details works!</p>
+
+<section class="doctor-details-page">
+
+  <a routerLink="/doctors" class="back-link">
+    ← Back to Doctors
+  </a>
+
+  @if (isLoading) {
+    <div class="page-message">
+      Loading doctor details...
+    </div>
+  } @else if (errorMessage) {
+    <div class="error-message" role="alert">
+      <h2>Unable to display doctor</h2>
+      <p>{{ errorMessage }}</p>
+      <a routerLink="/doctors">Browse Doctors</a>
+    </div>
+  } @else if (doctor) {
+    <article class="doctor-profile">
+
+      <header class="profile-header">
+        <div class="doctor-avatar">
+          {{ doctor.fullName.charAt(0).toUpperCase() }}
+        </div>
+
+        <div class="profile-heading">
+          <p class="specialization">
+            {{ doctor.specialization }}
+          </p>
+
+          <h1>{{ doctor.fullName }}</h1>
+
+          <p class="qualification">
+            {{ doctor.qualification }}
+          </p>
+        </div>
+      </header>
+
+      <div class="profile-content">
+        <h2>About the Doctor</h2>
+
+        <p class="description">
+          {{ doctor.description || 'No description available.' }}
+        </p>
+
+        <div class="details-grid">
+          <div class="detail-item">
+            <span>Specialization</span>
+            <strong>{{ doctor.specialization }}</strong>
+          </div>
+
+          <div class="detail-item">
+            <span>Qualification</span>
+            <strong>{{ doctor.qualification }}</strong>
+          </div>
+
+          <div class="detail-item">
+            <span>Experience</span>
+            <strong>{{ doctor.experience }} years</strong>
+          </div>
+
+          <div class="detail-item">
+            <span>Consultation Fee</span>
+            <strong>{{ doctor.consultationFee | currency:'LKR ':'symbol':'1.2-2' }}</strong>
+          </div>
+        </div>
+
+        <div class="profile-actions">
+          <a
+            class="book-button"
+            [routerLink]="['/appointments/book']"
+            [queryParams]="{ doctorId: doctor.id }">
+            Book Appointment
+          </a>
+
+          <a routerLink="/doctors" class="secondary-button">
+            Find Another Doctor
+          </a>
+        </div>
+      </div>
+
+    </article>
+  }
+
+</section>

@@ -1,36 +1,43 @@
-import {
-  Component,
-  OnInit,
-  ChangeDetectorRef
-} from '@angular/core';
 
 import {
+  ChangeDetectorRef,
+  Component,
+  OnInit
+} from '@angular/core';
+
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { CurrencyPipe } from '@angular/common';
+import {
   FormBuilder,
+  FormControl,
+  FormGroup,
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
-
 import { finalize } from 'rxjs';
 
 import { DoctorService } from '../../../../core/services/doctor';
 import { AppointmentService } from '../../../../core/services/appointment';
 
 import { Doctor } from '../../../../models/doctor.model';
-import {
-  CreateAppointmentRequest
-} from '../../../../models/appointment.model';
+import { CreateAppointmentRequest } from '../../../../models/appointment.model';
 
 @Component({
   selector: 'app-book-appointment',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [
+    RouterLink,
+    ReactiveFormsModule,
+    CurrencyPipe
+  ],
   templateUrl: './book-appointment.html',
   styleUrl: './book-appointment.css'
 })
 export class BookAppointment implements OnInit {
-  doctors: Doctor[] = [];
 
-  isLoadingDoctors = false;
+  doctor: Doctor | null = null;
+
+  isLoadingDoctor = false;
   isBooking = false;
 
   errorMessage = '';
@@ -39,28 +46,46 @@ export class BookAppointment implements OnInit {
 
   minDate = this.getTomorrowDate();
 
-  bookingForm;
+  bookingForm: FormGroup<{
+  appointmentDate: FormControl<string>;
+  timeSlot: FormControl<string>;
+}>;
 
-  constructor(
-    private fb: FormBuilder,
-    private doctorService: DoctorService,
-    private appointmentService: AppointmentService,
-    private cdr: ChangeDetectorRef
-  ) {
-    this.bookingForm = this.fb.group({
-      doctorId: [null as number | null, Validators.required],
-      appointmentDate: ['', Validators.required],
-      timeSlot: ['', Validators.required]
-    });
-  }
-
+ constructor(
+  private fb: FormBuilder,
+  private router: Router,
+  private route: ActivatedRoute,
+  private doctorService: DoctorService,
+  private appointmentService: AppointmentService,
+  private cdr: ChangeDetectorRef
+) {
+  this.bookingForm = this.fb.group({
+    appointmentDate: this.fb.nonNullable.control(
+      '',
+      Validators.required
+    ),
+    timeSlot: this.fb.nonNullable.control(
+      '',
+      Validators.required
+    )
+  });
+}
   ngOnInit(): void {
-    this.loadDoctors();
+    const doctorId = Number(
+      this.route.snapshot.queryParamMap.get('doctorId')
+    );
+
+    if (!Number.isInteger(doctorId) || doctorId <= 0) {
+      this.errorMessage =
+        'Please select a doctor before booking.';
+      return;
+    }
+
+    this.loadDoctor(doctorId);
   }
 
   private getTomorrowDate(): string {
     const date = new Date();
-
     date.setDate(date.getDate() + 1);
 
     const year = date.getFullYear();
@@ -70,27 +95,29 @@ export class BookAppointment implements OnInit {
     return `${year}-${month}-${day}`;
   }
 
-  loadDoctors(): void {
-    this.isLoadingDoctors = true;
+  loadDoctor(id: number): void {
+    this.isLoadingDoctor = true;
     this.errorMessage = '';
 
-    this.doctorService.getDoctors()
+    this.doctorService.getDoctorById(id)
       .pipe(
         finalize(() => {
-          this.isLoadingDoctors = false;
+          this.isLoadingDoctor = false;
           this.cdr.markForCheck();
         })
       )
       .subscribe({
-        next: (response: Doctor[]) => {
-          this.doctors = response;
+        next: (data) => {
+          this.doctor = data;
           this.cdr.markForCheck();
         },
         error: (error) => {
-          console.error('Error loading doctors:', error);
+          console.error('Failed to load doctor:', error);
 
           this.errorMessage =
-            'Unable to load doctors. Please try again.';
+            error.status === 404
+              ? 'Doctor not found.'
+              : 'Unable to load doctor details.';
 
           this.cdr.markForCheck();
         }
@@ -98,25 +125,25 @@ export class BookAppointment implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.bookingForm.invalid || this.isBooking) {
+    if (
+      this.bookingForm.invalid ||
+      this.isBooking ||
+      !this.doctor
+    ) {
       this.bookingForm.markAllAsTouched();
       return;
     }
 
-    const formValue = this.bookingForm.getRawValue();
+    const value = this.bookingForm.getRawValue();
 
-    if (
-      formValue.doctorId === null ||
-      !formValue.appointmentDate ||
-      !formValue.timeSlot
-    ) {
+    if (!value.appointmentDate || !value.timeSlot) {
       return;
     }
 
     const request: CreateAppointmentRequest = {
-      doctorId: Number(formValue.doctorId),
-      appointmentDate: formValue.appointmentDate,
-      timeSlot: formValue.timeSlot
+      doctorId: this.doctor.id,
+      appointmentDate: value.appointmentDate,
+      timeSlot: value.timeSlot
     };
 
     this.isBooking = true;
@@ -133,23 +160,27 @@ export class BookAppointment implements OnInit {
       )
       .subscribe({
         next: (response) => {
-          this.successMessage = response.message;
-          this.bookingReference = response.id;
+            this.successMessage = response.message;
+            this.bookingReference = response.id;
 
-          this.bookingForm.reset({
-            doctorId: null,
-            appointmentDate: '',
-            timeSlot: ''
-          });
+            this.bookingForm.reset({
+              appointmentDate: '',
+              timeSlot: ''
+            });
 
-          this.cdr.markForCheck();
-        },
+            this.cdr.markForCheck();
+
+            // Show the success message before navigating.
+            setTimeout(() => {
+              this.router.navigate(['/appointments', response.id]);
+            }, 5000);
+          },
         error: (error) => {
-          console.error('Error booking appointment:', error);
+          console.error('Appointment booking failed:', error);
 
           this.errorMessage =
             error.error?.message ??
-            'Unable to book your appointment. Please try again.';
+            'Unable to book the appointment. Please try again.';
 
           this.cdr.markForCheck();
         }

@@ -1,1 +1,96 @@
-<p>my-appointments works!</p>
+
+<section class="appointments-page">
+  <header class="page-header">
+    <div>
+      <h1>My Appointments</h1>
+      <p>View and manage your medical appointments.</p>
+    </div>
+
+    <a routerLink="/doctors" class="book-new-button">
+      + Book an Appointment
+    </a>
+  </header>
+
+  @if (isLoading) {
+    <div class="state-message" role="status">
+      Loading your appointments...
+    </div>
+  } @else if (errorMessage) {
+    <div class="error-message" role="alert">
+      <p>{{ errorMessage }}</p>
+
+      <button type="button" (click)="retry()">
+        Try Again
+      </button>
+    </div>
+  } @else if (appointments.length === 0) {
+    <div class="empty-state">
+      <h2>No appointments yet</h2>
+      <p>You haven't booked any appointments yet.</p>
+
+      <a routerLink="/doctors" class="book-new-button">
+        Find a Doctor
+      </a>
+    </div>
+  } @else {
+    <div class="appointments-summary">
+      <p>
+        Total appointments:
+        <strong>{{ appointments.length }}</strong>
+      </p>
+    </div>
+
+    <div class="appointments-list">
+      @for (appointment of appointments; track appointment.id) {
+        <article class="appointment-card">
+          <div class="appointment-header">
+            <div>
+              <h2>{{ appointment.doctorName }}</h2>
+              <p class="specialization">
+                {{ appointment.specialization }}
+              </p>
+            </div>
+
+            <span
+              class="status"
+              [class.pending]="appointment.status === 'Pending'"
+              [class.confirmed]="appointment.status === 'Confirmed'"
+              [class.cancelled]="appointment.status === 'Cancelled'">
+              {{ appointment.status }}
+            </span>
+          </div>
+
+          <div class="appointment-info">
+            <div class="info-item">
+              <span>Appointment Date</span>
+              <strong>
+                {{ appointment.appointmentDate | date:'mediumDate' }}
+              </strong>
+            </div>
+
+            <div class="info-item">
+              <span>Time</span>
+              <strong>{{ appointment.timeSlot }}</strong>
+            </div>
+
+            <div class="info-item">
+              <span>Consultation Fee</span>
+              <strong>
+                {{ appointment.consultationFee |
+                   currency:'LKR ':'symbol':'1.2-2' }}
+              </strong>
+            </div>
+          </div>
+
+          <div class="appointment-actions">
+            <a
+              [routerLink]="['/appointments', appointment.id]"
+              class="details-button">
+              View Appointment Details
+            </a>
+          </div>
+        </article>
+      }
+    </div>
+  }
+</section>
