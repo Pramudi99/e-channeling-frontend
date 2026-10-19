@@ -1,1 +1,75 @@
-<p>doctors-list works!</p>
+
+<section class="doctors-page">
+  <header class="page-header">
+    <h1>Find Your Doctor</h1>
+    <p>Search doctors by name or medical specialization.</p>
+  </header>
+
+  <input
+    type="search"
+    class="search-input"
+    placeholder="Search doctors..."
+    aria-label="Search doctors"
+    [value]="searchTerm"
+    (input)="searchTerm = $any($event.target).value"
+  />
+
+  <nav class="specialization-filters"
+       aria-label="Filter by specialization">
+
+    <button
+      type="button"
+      [class.active]="selectedSpecialization === 'All'"
+      (click)="selectSpecialization('All')">
+      All
+    </button>
+
+    @for (specialization of specializations; track specialization) {
+      <button
+        type="button"
+        [class.active]="selectedSpecialization === specialization"
+        (click)="selectSpecialization(specialization)">
+        {{ specialization }}
+      </button>
+    }
+  </nav>
+
+  @if (isLoading) {
+    <p>Loading doctors...</p>
+  } @else if (errorMessage) {
+    <p class="error-message" role="alert">
+      {{ errorMessage }}
+    </p>
+
+    <button type="button" (click)="loadDoctors()">
+      Try Again
+    </button>
+  } @else if (filteredDoctors.length === 0) {
+    <p>No doctors found.</p>
+  } @else {
+    <div class="doctor-grid">
+      @for (doctor of filteredDoctors; track doctor.id) {
+        <article class="doctor-card">
+          <div class="doctor-avatar">
+            {{ doctor.fullName.charAt(0).toUpperCase() }}
+          </div>
+
+          <h2>{{ doctor.fullName }}</h2>
+          <p class="specialization">
+            {{ doctor.specialization }}
+          </p>
+          <p>{{ doctor.qualification }}</p>
+          <p>{{ doctor.experience }} years of experience</p>
+
+          <p class="fee">
+            Consultation fee: {{ doctor.consultationFee }}
+          </p>
+
+          <a [routerLink]="['/doctors', doctor.id]">
+            View Details
+          </a>
+        </article>
+      }
+    </div>
+  }
+</section>
