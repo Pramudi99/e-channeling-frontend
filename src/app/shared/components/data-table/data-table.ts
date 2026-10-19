@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 
 export interface TableColumn {
@@ -18,6 +18,10 @@ export class DataTable {
   @Input() rows: object[] = [];
   @Input() loading = false;
   @Input() emptyMessage = 'No records found.';
+
+  @Output() viewRow = new EventEmitter<object>();
+  @Output() editRow = new EventEmitter<object>();
+  @Output() deleteRow = new EventEmitter<object>();
 
   getCellValue(row: object, key: string): unknown {
     return (row as Record<string, unknown>)[key];

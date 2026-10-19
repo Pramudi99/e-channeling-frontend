@@ -19,3 +19,75 @@ td {
 th {
   background: #f3f4f6;
 }
+
+
+/* Actions column */
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+/* Common button styles */
+.actions button {
+  padding: 7px 12px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease,
+              transform 0.2s ease;
+}
+
+/* View button */
+.actions button:nth-child(1) {
+  background-color: #e0f2fe;
+  color: #0369a1;
+  border-color: #bae6fd;
+}
+
+.actions button:nth-child(1):hover {
+  background-color: #bae6fd;
+}
+
+/* Edit button */
+.actions button:nth-child(2) {
+  background-color: #fef3c7;
+  color: #92400e;
+  border-color: #fde68a;
+}
+
+.actions button:nth-child(2):hover {
+  background-color: #fde68a;
+}
+
+/* Delete button */
+.actions button:nth-child(3) {
+  background-color: #fee2e2;
+  color: #b91c1c;
+  border-color: #fecaca;
+}
+
+.actions button:nth-child(3):hover {
+  background-color: #fecaca;
+}
+
+/* Keyboard accessibility */
+.actions button:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+
+/* Small screens */
+@media (max-width: 768px) {
+  .actions {
+    gap: 5px;
+  }
+
+  .actions button {
+    padding: 6px 8px;
+    font-size: 12px;
+  }
+}

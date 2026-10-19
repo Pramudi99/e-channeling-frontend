@@ -1,6 +1,7 @@
+
 <form [formGroup]="doctorForm" (ngSubmit)="onSubmit()">
 
-  <h2>Add New Doctor</h2>
+  <h2>{{ isEditMode ? 'Edit Doctor' : 'Add New Doctor' }}</h2>
 
   <label for="fullName">Full Name</label>
   <input id="fullName" type="text" formControlName="fullName" />
@@ -20,9 +21,19 @@
   <input id="specialization" type="text"
          formControlName="specialization" />
 
+  @if (doctorForm.controls.specialization.touched &&
+       doctorForm.controls.specialization.invalid) {
+    <small>Specialization is required.</small>
+  }
+
   <label for="qualification">Qualification</label>
   <input id="qualification" type="text"
          formControlName="qualification" />
+
+  @if (doctorForm.controls.qualification.touched &&
+       doctorForm.controls.qualification.invalid) {
+    <small>Qualification is required.</small>
+  }
 
   <label for="experience">Experience (years)</label>
   <input id="experience" type="number" min="0"
@@ -36,11 +47,19 @@
   <textarea id="description"
             formControlName="description"></textarea>
 
-<div class="form-actions">
-  <button type="submit">Save Doctor</button>
-  <button type="button" (click)="cancelForm.emit()">
-    Cancel
-  </button>
-</div>
+  <div class="form-actions">
+    <button type="submit" [disabled]="isSaving">
+      @if (isSaving) {
+        Saving...
+      } @else {
+        {{ isEditMode ? 'Update Doctor' : 'Save Doctor' }}
+      }
+    </button>
+
+    <button type="button" (click)="cancelForm.emit()"
+            [disabled]="isSaving">
+      Cancel
+    </button>
+  </div>
 
 </form>

@@ -1,7 +1,5 @@
 
-
 <section class="doctors-page">
-
   <div class="page-header">
     <div class="page-title">
       <h2>Manage Doctors</h2>
@@ -12,30 +10,67 @@
       type="button"
       class="add-button"
       (click)="openDoctorForm()">
-      <span class="plus-icon">+</span>
-      Add Doctor
+      + Add Doctor
     </button>
   </div>
 
-  @if (errorMessage) {
-    <div class="error-message">
-      <span>{{ errorMessage }}</span>
+  @if (successMessage) {
+    <p class="success-message" role="status">
+      {{ successMessage }}
+    </p>
+  }
 
-      <button
-        type="button"
-        class="retry-button"
-        (click)="loadDoctors()">
-        Retry
-      </button>
+  @if (errorMessage) {
+    <div class="error-message" role="alert">
+      <span>{{ errorMessage }}</span>
+      <button type="button" (click)="loadDoctors()">Retry</button>
     </div>
   }
 
   @if (showDoctorForm) {
     <div class="form-card">
       <app-doctor-form
+        [doctor]="selectedDoctor"
+        [isSaving]="isSaving"
         (saveDoctor)="onSaveDoctor($event)"
         (cancelForm)="cancelDoctorForm()">
       </app-doctor-form>
+    </div>
+  }
+
+  @if (doctorToView; as doctor) {
+    <div class="details-card">
+      <div class="details-header">
+        <h3>Doctor Details</h3>
+        <button type="button" (click)="closeDetails()">Close</button>
+      </div>
+
+      <dl class="doctor-details">
+        <dt>Full Name</dt>
+        <dd>{{ doctor.fullName }}</dd>
+
+        <dt>Email</dt>
+        <dd>{{ doctor.email }}</dd>
+
+        <dt>Specialization</dt>
+        <dd>{{ doctor.specialization }}</dd>
+
+        <dt>Qualification</dt>
+        <dd>{{ doctor.qualification }}</dd>
+
+        <dt>Experience</dt>
+        <dd>{{ doctor.experience }} years</dd>
+
+        <dt>Consultation Fee</dt>
+        <dd>{{ doctor.consultationFee }}</dd>
+
+        <dt>Description</dt>
+        <dd>{{ doctor.description || 'No description available.' }}</dd>
+      </dl>
+
+      <button type="button" (click)="editDoctor(doctor)">
+        Edit Doctor
+      </button>
     </div>
   }
 
@@ -44,11 +79,10 @@
       [columns]="columns"
       [rows]="doctors"
       [loading]="isLoading"
-      emptyMessage="No doctors have been registered yet.">
+      emptyMessage="No doctors have been registered yet."
+      (viewRow)="viewDoctor($event)"
+      (editRow)="editDoctor($event)"
+      (deleteRow)="deleteDoctor($event)">
     </app-data-table>
   </div>
-
 </section>
-
-
-

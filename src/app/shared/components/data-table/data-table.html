@@ -1,16 +1,15 @@
 
 <div class="table-container">
   @if (loading) {
-    <p>Loading data...</p>
-  }
-
-  @if (!loading && rows.length > 0) {
+    <p class="loading-message">Loading data...</p>
+  } @else if (rows.length > 0) {
     <table>
       <thead>
         <tr>
           @for (column of columns; track column.key) {
             <th>{{ column.label }}</th>
           }
+          <th>Actions</th>
         </tr>
       </thead>
 
@@ -20,20 +19,25 @@
             @for (column of columns; track column.key) {
               <td>{{ getCellValue(row, column.key) }}</td>
             }
+
+            <td class="actions">
+              <button type="button" (click)="viewRow.emit(row)">
+                View
+              </button>
+
+              <button type="button" (click)="editRow.emit(row)">
+                Edit
+              </button>
+
+              <button type="button" (click)="deleteRow.emit(row)">
+                Delete
+              </button>
+            </td>
           </tr>
         }
       </tbody>
     </table>
-  }
-
-  @if (!loading && rows.length === 0) {
-    <p>{{ emptyMessage }}</p>
+  } @else {
+    <p class="empty-message">{{ emptyMessage }}</p>
   }
 </div>
-
-
-
-
-
-
-

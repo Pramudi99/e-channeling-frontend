@@ -24,7 +24,7 @@ export class DoctorService {
   return this.http.post<Doctor>(this.apiUrl, doctor);
 }
 
-  updateDoctor(id: number, data: Doctor): Observable<Doctor> {
+  updateDoctor(id: number, data: CreateDoctorRequest): Observable<Doctor> {
     return this.http.put<Doctor>(`${this.apiUrl}/${id}`, data);
   }
 
