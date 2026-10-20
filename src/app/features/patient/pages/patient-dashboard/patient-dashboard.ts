@@ -9,15 +9,15 @@ import { Router } from '@angular/router';
   templateUrl: './patient-dashboard.html',
 })
 export class PatientDashboard {
-    constructor(
-    private auth: Auth,
-    private router: Router
-  ) {}
+  //   constructor(
+  //   private auth: Auth,
+  //   private router: Router
+  // ) {}
 
-  logout(): void {
+  // logout(): void {
 
-    this.auth.logout();
+  //   this.auth.logout();
 
-    this.router.navigate(['/login']);
-  }
+  //   this.router.navigate(['/login']);
+  // }
 }

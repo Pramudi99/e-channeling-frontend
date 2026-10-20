@@ -1,136 +1,143 @@
+
 import { Routes } from '@angular/router';
 
 import { Login } from './features/auth/pages/login/login';
-import { Register} from './features/auth/pages/register/register';
+import { Register } from './features/auth/pages/register/register';
 
 import { DoctorsList } from './features/doctors/pages/doctors-list/doctors-list';
 import { DoctorsDetails } from './features/doctors/pages/doctors-details/doctors-details';
+
 import { BookAppointment } from './features/appointments/pages/book-appointment/book-appointment';
 import { MyAppointments } from './features/appointments/pages/my-appointments/my-appointments';
+import { AppointmentDetails } from './features/appointments/pages/appointment-details/appointment-details';
+
 import { PatientDashboard } from './features/patient/pages/patient-dashboard/patient-dashboard';
 import { PatientProfile } from './features/patient/pages/patient-profile/patient-profile';
+
 import { DoctorDashboard } from './features/doctor/pages/doctor-dashboard/doctor-dashboard';
 import { DoctorAppointments } from './features/doctor/pages/doctor-appointments/doctor-appointments';
 import { DoctorSchedule } from './features/doctor/pages/doctor-schedule/doctor-schedule';
+
 import { AdminDashboard } from './features/admin/pages/admin-dashboard/admin-dashboard';
 import { AdminDoctors } from './features/admin/pages/admin-doctors/admin-doctors';
 import { AdminPatients } from './features/admin/pages/admin-patients/admin-patients';
 import { AdminAppointments } from './features/admin/pages/admin-appointments/admin-appointments';
+
 import { authGuard } from './core/guards/auth-guard';
 import { roleGuard } from './core/guards/role-guard';
-import { AppointmentDetails } from './features/appointments/pages/appointment-details/appointment-details';
-
+import { MainLayout } from './shared/layout/main-layout/main-layout';
+import { DashboardRedirect } from './shared/pages/dashboard-redirect/dashboard-redirect';
 export const routes: Routes = [
 
-    //Authetication
-    {
-        path: 'login',
-        component: Login
-    },
-    {
-        path: 'register',
-        component: Register
-    },
-    // Doctors
-    {
-      path: 'doctors',
-      component: DoctorsList
-    },
+  // Authentication pages: no shared application layout
+  {
+    path: 'login',
+    component: Login
+  },
+  {
+    path: 'register',
+    component: Register
+  },
 
-    {
-      path: 'doctors/:id',
-      component: DoctorsDetails
-    },
 
-    // Appointments
-    {
-      path: 'appointments/book',
-      component: BookAppointment,
-      canActivate: [authGuard, roleGuard(['Patient'])]
-    },
+  // Redirect users to their role-specific dashboard
+  {
+    path: 'dashboard',
+    component: DashboardRedirect,
+    canActivate: [authGuard]
+  },
 
-   {
-      path: 'appointments/my-appointments',
-      component: MyAppointments,
-      canActivate: [authGuard, roleGuard(['Patient'])]
-    },
+  // Main application layout
+  {
+    path: '',
+    component: MainLayout,
+    children: [
 
-    {
-      path: 'appointments/:id',
-      component: AppointmentDetails,
-      canActivate: [authGuard, roleGuard(['Patient'])]
-    },
+      // Doctors
+      {
+        path: 'doctors',
+        component: DoctorsList
+      },
+      {
+        path: 'doctors/:id',
+        component: DoctorsDetails
+      },
 
-    
+      // Appointments
+      {
+        path: 'appointments/book',
+        component: BookAppointment,
+        canActivate: [authGuard, roleGuard(['Patient'])]
+      },
+      {
+        path: 'appointments/my-appointments',
+        component: MyAppointments,
+        canActivate: [authGuard, roleGuard(['Patient'])]
+      },
+      {
+        path: 'appointments/:id',
+        component: AppointmentDetails,
+        canActivate: [authGuard, roleGuard(['Patient'])]
+      },
 
-    // Patient
-    {
-      path: 'patient/dashboard',
-      component: PatientDashboard,
-      canActivate: [authGuard,
-        roleGuard(['Patient'])
-      ]
-      
-    },
+      // Patient
+      {
+        path: 'patient/dashboard',
+        component: PatientDashboard,
+        canActivate: [authGuard, roleGuard(['Patient'])]
+      },
+      {
+        path: 'patient/profile',
+        component: PatientProfile
+      },
 
-    {
-      path: 'patient/profile',
-      component: PatientProfile
-    },
+      // Doctor
+      {
+        path: 'doctor/dashboard',
+        component: DoctorDashboard,
+        canActivate: [authGuard, roleGuard(['Doctor'])]
+      },
+      {
+        path: 'doctor/appointments',
+        component: DoctorAppointments
+      },
+      {
+        path: 'doctor/schedule',
+        component: DoctorSchedule
+      },
 
-    // Doctor
-    {
-      path: 'doctor/dashboard',
-      component: DoctorDashboard,
-      canActivate: [authGuard,
-        roleGuard(['Doctor'])
-      ]
-    },
+      // Admin
+      {
+        path: 'admin/dashboard',
+        component: AdminDashboard
+      },
+      {
+        path: 'admin/doctors',
+        component: AdminDoctors
+        // Restore your Admin authorization guard here
+        // when ready.
+      },
+      {
+        path: 'admin/patients',
+        component: AdminPatients
+      },
+      {
+        path: 'admin/appointments',
+        component: AdminAppointments
+      },
 
-    {
-      path: 'doctor/appointments',
-      component: DoctorAppointments
-    },
+      // Default route inside the layout
+      {
+        path: '',
+        redirectTo: 'doctors',
+        pathMatch: 'full'
+      }
+    ]
+  },
 
-    {
-      path: 'doctor/schedule',
-      component: DoctorSchedule
-    },
-
-    // Admin
-    {
-      path: 'admin/dashboard',
-      component: AdminDashboard
-    },
-
-    {
-      path: 'admin/doctors',
-      component: AdminDoctors,
-      // canActivate: [authGuard,
-      //   roleGuard(['Admin'])
-      // ]
-    },
-
-    {
-      path: 'admin/patients',
-      component: AdminPatients
-    },
-
-    {
-      path: 'admin/appointments',
-      component: AdminAppointments
-    },
-
-    // Default route
-    {
-      path: '',
-      redirectTo: 'login',
-      pathMatch: 'full'
-    },
-
-    // Unknown route
-    {
-      path: '**',
-      redirectTo: 'login'
-    }
+  // Unknown route
+  {
+    path: '**',
+    redirectTo: 'login'
+  }
 ];

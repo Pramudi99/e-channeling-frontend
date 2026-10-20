@@ -1,0 +1,94 @@
+
+<header class="site-header">
+  <div class="header-container">
+
+    <a routerLink="/" class="brand">
+      <span class="brand-icon">+</span>
+      <span>E-Channeling</span>
+    </a>
+
+    <nav class="navigation">
+
+      <!-- Links for logged-out users -->
+      @if (!isLoggedIn) {
+        <a routerLink="/doctors" routerLinkActive="active">
+          Find Doctors
+        </a>
+      }
+
+      <!-- Patient links -->
+      @if (isLoggedIn && role === 'Patient') {
+        <a routerLink="/doctors" routerLinkActive="active">
+          Find Doctors
+        </a>
+
+        <a
+          routerLink="/appointments/my-appointments"
+          routerLinkActive="active">
+          My Appointments
+        </a>
+
+        <a routerLink="/patient/profile" routerLinkActive="active">
+          My Profile
+        </a>
+
+        <a routerLink="/patient/dashboard" routerLinkActive="active">
+          Dashboard
+        </a>
+      }
+
+      <!-- Doctor links -->
+      @if (isLoggedIn && role === 'Doctor') {
+        <a routerLink="/doctor/dashboard" routerLinkActive="active">
+          Dashboard
+        </a>
+
+        <a routerLink="/doctor/appointments" routerLinkActive="active">
+          Appointments
+        </a>
+
+        <a routerLink="/doctor/schedule" routerLinkActive="active">
+          My Schedule
+        </a>
+      }
+
+      <!-- Admin links -->
+      @if (isLoggedIn && role === 'Admin') {
+        <a routerLink="/admin/dashboard" routerLinkActive="active">
+          Dashboard
+        </a>
+
+        <a routerLink="/admin/doctors" routerLinkActive="active">
+          Manage Doctors
+        </a>
+
+        <a routerLink="/admin/patients" routerLinkActive="active">
+          Manage Patients
+        </a>
+
+        <a routerLink="/admin/appointments" routerLinkActive="active">
+          Manage Appointments
+        </a>
+      }
+
+    </nav>
+
+    <div class="header-actions">
+      @if (!isLoggedIn) {
+        <a routerLink="/login" class="login-link">Login</a>
+
+        <a routerLink="/register" class="register-button">
+          Register
+        </a>
+      } @else {
+        <button
+          type="button"
+          class="logout-button"
+          (click)="logout()">
+          LogOut
+        </button>
+      }
+    </div>
+
+  </div>
+</header>

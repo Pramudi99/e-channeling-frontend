@@ -39,6 +39,7 @@ export class BookAppointment implements OnInit {
 
   isLoadingDoctor = false;
   isBooking = false;
+  isBookingSuccessful = false;
 
   errorMessage = '';
   successMessage = '';
@@ -160,6 +161,7 @@ export class BookAppointment implements OnInit {
       )
       .subscribe({
         next: (response) => {
+            this.isBookingSuccessful = true;
             this.successMessage = response.message;
             this.bookingReference = response.id;
 

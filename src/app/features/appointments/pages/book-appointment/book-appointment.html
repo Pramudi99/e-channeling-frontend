@@ -36,7 +36,7 @@
 
   @if (isLoadingDoctor) {
     <p>Loading doctor details...</p>
-  } @else if (doctor) {
+  } @else if (doctor && !isBookingSuccessful) {
 
     <article class="selected-doctor">
       <div class="doctor-avatar">

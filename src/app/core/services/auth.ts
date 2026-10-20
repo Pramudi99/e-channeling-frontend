@@ -30,7 +30,18 @@ export class Auth {
     );
   }
 
-  logout(): void {
-  localStorage.removeItem('token');
+  getRole(): string | null {
+    return localStorage.getItem('role');
   }
-}
+
+  isLoggedIn(): boolean {
+    const token = localStorage.getItem('token');
+    return !!token;
+  }
+
+  logout(): void {
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    localStorage.removeItem('userId');
+  }
+  }

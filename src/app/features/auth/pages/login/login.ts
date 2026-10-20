@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Auth } from '../../../../core/services/auth';
+import { Router } from '@angular/router';
 @Component({
   imports: [ReactiveFormsModule],
   selector: 'app-login',
@@ -15,7 +16,8 @@ export class Login {
   });
 
   constructor(
-    private auth: Auth
+    private auth: Auth,
+    private router: Router
   ) {}
 
   onSubmit() {
@@ -37,11 +39,14 @@ export class Login {
         console.log('Login successful:', response);
         localStorage.setItem('token', response.token);
         localStorage.setItem('role', response.role);
+        localStorage.setItem('userId', String(response.userId));
+        
 
         this.auth.getProfile().subscribe({
 
         next: profile => {
           console.log('Profile:', profile);
+          this.router.navigate(['/dashboard']);
         },
 
         error: error => {
